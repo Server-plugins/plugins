@@ -1,4 +1,8 @@
 name: plugins
 version: '1.0-SNAPSHOT'
-main: org.plugin.com
+main: org.plugin.Main
 api-version: '1.21'
+commands:
+  dudumtack :
+    description: test
+    usage: Oh no...
