@@ -1,42 +1,47 @@
 package org.plugin;
 
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Money {
 
-    private Main plugin;
-    FileConfiguration config;
+    private static final Map<String, Integer> playerMoneyMap = new HashMap<>();
+    private static final FileUtil fileUtil = new FileUtil();
 
-    public Money(Main plugin) {
-        this.plugin = plugin;
-        config = plugin.getConfig();
-    }
+    private Money() {}
 
-    public void makePlayerDataOnJoin(Player p) {
-        //config.addDefault("money", 0);
-        plugin.saveConfig();
-
-        if (!config.contains(p.getName())) {
-            config.set(p.getName()+".money", 0);
+    public static int getMoney(String playerName) {
+        if (playerMoneyMap.containsKey(playerName)) {
+            return playerMoneyMap.get(playerName);
+        } else {
+            playerMoneyMap.put(playerName, 0);
+            return 0;
         }
     }
 
-    public void showPlayerDataOnCommand(Player p, Command command, String[] args) {
+    public static void showPlayerDataOnCommand(Player p, Command command, String[] args) {
         if (command.getName().equalsIgnoreCase("돈")) {
-            p.sendMessage("돈 :"+config.get(p.getName()+".money"));
+            p.sendMessage("돈 :" + getMoney(p.getName()));
         }
     }
 
+    public static void upLoadMoneyData() {
+        fileUtil.upLoadYamlToMap(fileUtil.loadYaml("money.yml"), playerMoneyMap, Integer.class);
+    }
 
+    public static void saveMoneyData() {
+        fileUtil.upLoadYamlToMap(fileUtil.loadYaml("money.yml"), playerMoneyMap, Integer.class);
+    }
 
+    public static void giveMoney(String playername, int money) {
+        playerMoneyMap.put(playername, getMoney(playername) + money);
+    }
 
-
-
-
-
-
+    public static void takeMoney(String playername, int money) {
+        playerMoneyMap.put(playername, getMoney(playername) - money);
+    }
 
 }

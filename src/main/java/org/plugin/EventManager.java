@@ -9,10 +9,9 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 
+import static org.plugin.Money.getMoney;
+
 public class EventManager implements Listener {
-
-    private Main plugin;
-
 
     @EventHandler
     public void playerInteract(PlayerInteractEvent event) {
@@ -36,10 +35,9 @@ public class EventManager implements Listener {
     @EventHandler
     public void playerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        Money money = plugin.getMoneyInstance();
-        money.makePlayerDataOnJoin(player);
+        getMoney(player.getName());
         player.sendMessage("안녕");
-
     }
+
 
 }
