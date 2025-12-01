@@ -2,6 +2,7 @@ package org.plugin;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.plugin.domain.command.CommandHandler;
 import org.plugin.domain.money.Money;
 import org.plugin.util.Scheduler;
 
@@ -27,7 +28,7 @@ public final class Main extends JavaPlugin {
         scheduler.task(Money::saveMoneyData, 30, 30);
 
         getLogger().info("플러그인이 활성화되었습니다.");
-        Objects.requireNonNull(this.getCommand("돈")).setExecutor(new UseCommand());
+        Objects.requireNonNull(this.getCommand("돈")).setExecutor(new CommandHandler());
     }
 
 
