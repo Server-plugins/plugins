@@ -17,11 +17,15 @@ public class CommandHandler implements CommandExecutor{
                              @NotNull String[] args) {
         Player player = (Player) sender;
 
-        switch (label) {
-            case "돈" -> moneyCommandHandler(sender, player, args);
-            default -> {
-                return true;
+        try {
+            switch (label) {
+                case "돈" -> moneyCommandHandler(sender, player, args);
+                default -> {
+                    return true;
+                }
             }
+        } catch (IllegalAccessException e) { // 관리자 권한 예외처리
+            return false;
         }
 
         return true;

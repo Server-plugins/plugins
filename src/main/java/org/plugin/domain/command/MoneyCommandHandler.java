@@ -9,7 +9,7 @@ public class MoneyCommandHandler {
 
     private final Main plugin = Main.getInstance();
 
-    public static void moneyCommandHandler(CommandSender sender, Player player, String[] args) {
+    public static void moneyCommandHandler(CommandSender sender, Player player, String[] args) throws IllegalAccessException {
         if (args.length == 0) {
             sendHelp(sender);
         }
@@ -20,9 +20,9 @@ public class MoneyCommandHandler {
             case "송금" -> sendMoney(sender, player, args);
             case "수표" -> checkMoney(sender, player, args);
             case "저장" -> saveMoney(sender);
-            case "설정" -> setMoney(sender, player, args);
-            case "빼기" -> minusMoney(sender, player, args);
-            case "주기" -> plusMoney(sender, player, args); //plus 추가함
+            case "설정" -> setMoney(sender, args);
+            case "빼기" -> minusMoney(sender, args);
+            case "주기" -> plusMoney(sender, args);
             case "확인" -> checkPlayerMoney(sender, player, args);
             default     -> sender.sendMessage("알 수 없는 명령어입니다. /돈 help");
         }
@@ -64,43 +64,39 @@ public class MoneyCommandHandler {
          */
     }
 
-    private static void saveMoney(CommandSender sender) {
+    private static void saveMoney(CommandSender sender) throws IllegalAccessException {
         opCheck(sender);
-        /*if (opCheck(sender)) return;*/ //만일 opCheck boolean으로 바꾼다면
-
 
         Money.saveMoneyData();
         sender.sendMessage("Money Data 저장 완료.");
     }
 
-    private static void minusMoney(CommandSender sender, Player player, String[] args) {
-       Money.addMoney(args[1], Integer.parseInt(args[2]) * -1);//돈 빼기 DDT 1000
+    private static void minusMoney(CommandSender sender, String[] args) throws IllegalAccessException {
+        opCheck(sender);
+        Money.addMoney(args[1], Integer.parseInt(args[2]) * -1);
     }
 
-    private static void plusMoney(CommandSender sender, Player player, String[] args) {
-        Money.addMoney(args[1], Integer.parseInt(args[2]));//돈 주기 DDT 1000
+    private static void plusMoney(CommandSender sender, String[] args) throws IllegalAccessException {
+        opCheck(sender);
+        Money.addMoney(args[1], Integer.parseInt(args[2]));
     }
 
-    private static void checkPlayerMoney(CommandSender sender, Player player, String[] args) {
-        sender.sendMessage(args[1]+"의 소지금 : "+Money.getMoney(player.getName()));
+    private static void checkPlayerMoney(CommandSender sender, Player player, String[] args) throws IllegalAccessException {
+        opCheck(sender);
+        sender.sendMessage(args[1]+"의 소지금 : " + Money.getMoney(player.getName()));
     }
 
-    private static void setMoney(CommandSender sender, Player player, String[] args) {
+    private static void setMoney(CommandSender sender, String[] args) throws IllegalAccessException {
+        opCheck(sender);
         Money.setMoney(args[1], Integer.parseInt(args[2]));
     }
 
-    private static void opCheck(CommandSender sender) {
+    private static void opCheck(CommandSender sender) throws IllegalAccessException {
         if (!sender.isOp()) sender.sendMessage("관리자 전용 명령어입니다.");
+        throw new IllegalAccessException("관리자 전용 명령어 사용 시도: " + sender.getName());
     }
-//밑에처럼 바꾸는거 어떰?
-    /*private static boolean opCheck(CommandSender sender) {
-        if (!sender.isOp()) sender.sendMessage("관리자 전용 명령어입니다."); return true;
-    }*/
 
     private static void sendHelp(CommandSender sender) {
-        /*
-        * todo: help 메세지 적기
-         */
         sender.sendMessage("/돈 명령어의 사용법을 안내합니다. \n");
         sender.sendMessage("/돈 송금 (닉네임) (금액) 닉네임에게 금액만큼 송금합니다 \n");
         sender.sendMessage("/돈 수표 (금액) 금액만큼 자신의 돈을 수표로 만듭니다\n");
