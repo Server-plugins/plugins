@@ -6,11 +6,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.plugin.domain.gamble.Gamble;
 
 import static org.plugin.domain.money.Money.getMoney;
+import static org.plugin.domain.scoreBoard.ScoreBoard.createScoreBoard;
+import static org.plugin.domain.scoreBoard.ScoreBoard.updateScoreBoard;
 
 public class EventManager implements Listener {
 
@@ -38,7 +41,12 @@ public class EventManager implements Listener {
         Player player = event.getPlayer();
         getMoney(player.getName());
         player.sendMessage("안녕");
+        createScoreBoard(event.getPlayer());
+        updateScoreBoard();
     }
 
-
+    @EventHandler
+    public void onPlayerQuitEventBoard(PlayerQuitEvent event) {
+        updateScoreBoard();
+    }
 }

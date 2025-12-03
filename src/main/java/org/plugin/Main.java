@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.plugin.domain.command.CommandHandler;
 import org.plugin.domain.money.Money;
+import org.plugin.domain.scoreBoard.ScoreBoard;
 import org.plugin.util.Scheduler;
 
 import java.util.Objects;
@@ -26,6 +27,7 @@ public final class Main extends JavaPlugin {
         upLoadMoneyData();
 
         scheduler.task(Money::saveMoneyData, 30, 30);
+        scheduler.task(ScoreBoard::updateScoreBoard, 30, 30);
 
         getLogger().info("플러그인이 활성화되었습니다.");
         Objects.requireNonNull(this.getCommand("돈")).setExecutor(new CommandHandler());
