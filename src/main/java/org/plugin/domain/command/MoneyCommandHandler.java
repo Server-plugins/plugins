@@ -12,20 +12,22 @@ public class MoneyCommandHandler {
     public static void moneyCommandHandler(CommandSender sender, Player player, String[] args) throws IllegalAccessException {
         if (args.length == 0) {
             sendHelp(sender);
+        }else {
+            String sub = args[0];
+
+            switch (sub) {
+                case "송금" -> sendMoney(sender, player, args);
+                case "수표" -> checkMoney(sender, player, args);
+                case "저장" -> saveMoney(sender);
+                case "설정" -> setMoney(sender, args);
+                case "빼기" -> minusMoney(sender, args);
+                case "주기" -> plusMoney(sender, args);
+                case "확인" -> checkPlayerMoney(sender, player, args);
+                default     -> sender.sendMessage("알 수 없는 명령어입니다. /돈 help");
+            }
         }
 
-        String sub = args[0];
 
-        switch (sub) {
-            case "송금" -> sendMoney(sender, player, args);
-            case "수표" -> checkMoney(sender, player, args);
-            case "저장" -> saveMoney(sender);
-            case "설정" -> setMoney(sender, args);
-            case "빼기" -> minusMoney(sender, args);
-            case "주기" -> plusMoney(sender, args);
-            case "확인" -> checkPlayerMoney(sender, player, args);
-            default     -> sender.sendMessage("알 수 없는 명령어입니다. /돈 help");
-        }
     }
 
     private static void sendMoney(CommandSender sender, Player player, String[] args) {

@@ -1,5 +1,6 @@
 package org.plugin;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -10,6 +11,9 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.plugin.domain.gamble.Gamble;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static org.plugin.domain.money.Money.getMoney;
 import static org.plugin.domain.scoreBoard.ScoreBoard.createScoreBoard;
@@ -22,9 +26,8 @@ public class EventManager implements Listener {
         Player p = event.getPlayer();
         Action action = event.getAction();
         ItemStack item = event.getItem();
-        p.sendMessage(p.getName() + "이 감지됨");
+      p.sendMessage(p.getName() + "이 감지됨");
         if (item == null || item.getItemMeta().getPersistentDataContainer().isEmpty()) {
-            p.sendMessage("item이 null이거나 ㅇㅇ 암튼 그럼");
             return;
         }
         PersistentDataContainer pdc = item.getItemMeta().getPersistentDataContainer();
