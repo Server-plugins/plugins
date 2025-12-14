@@ -1,28 +1,30 @@
 package org.plugin;
 
+import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.plugin.domain.command.CommandHandler;
+import org.plugin.domain.customInventory.CustomInventoryGUI;
 import org.plugin.domain.money.Money;
+import org.plugin.domain.npc.CustomNPC;
+import org.plugin.domain.npc.NPC;
 import org.plugin.domain.scoreBoard.ScoreBoard;
+import org.plugin.util.ItemUtil;
 import org.plugin.util.Scheduler;
 
 import java.util.Objects;
 
 import static org.plugin.domain.money.Money.upLoadMoneyData;
 
-
 public final class Main extends JavaPlugin {
     private static Main plugin;
-
 
     @Override
     public void onEnable() {
         plugin = this;
-//        // Plugin startup logic
-//        Gamble plugin = new Gamble();
         Scheduler scheduler = new Scheduler();
-        Bukkit.getPluginManager().registerEvents(new EventManager(), this);
+        Bukkit.getPluginManager().registerEvents(new EventManager(
+                new NPC()), this);
 
         upLoadMoneyData();
         scheduler.task(Money::saveMoneyData, 30, 30);
@@ -32,7 +34,6 @@ public final class Main extends JavaPlugin {
         Objects.requireNonNull(this.getCommand("돈")).setExecutor(new CommandHandler());
 
     }
-
 
 
 
