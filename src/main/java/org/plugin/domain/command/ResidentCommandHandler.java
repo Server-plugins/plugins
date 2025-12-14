@@ -6,12 +6,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class ResidentCommandHandler {
-
-
-
-
-
-    public static void residentCommandHandler(CommandSender sender, Player player, String[] args) {
+    final int residentcost = 10000;
+    public void residentCommandHandler(CommandSender sender, Player player, String[] args) {
         switch (args[0]) {
             case "선택" -> residentSelect(sender, player, args);
             default -> showHelp(sender, player, args);
@@ -19,7 +15,7 @@ public class ResidentCommandHandler {
 
     }
 
-    private static void residentSelect(CommandSender sender, Player player, String[] args) {
+    private void residentSelect(CommandSender sender, Player player, String[] args) {
        Location a = player.getLocation();
        int x = (int) a.getX();
        int z = (int) a.getZ();
@@ -45,8 +41,7 @@ public class ResidentCommandHandler {
         player.sendMessage("선택된 곳의 좌표 :"+ x +" "+" "+z);
     }
 
-    private static void showHelp(CommandSender sender, Player player, String[] args) {
-        final int residentcost = 10000;
+    private void showHelp(CommandSender sender, Player player, String[] args) {
         player.sendMessage("/땅 선택 땅을 선택합니다");
         player.sendMessage("/땅 생성 자신의 땅을 생성합니다 가격은" + residentcost +"원입니다.");
         player.sendMessage("땅은 인당 1개만 가질수 있고 확장이 가능합니다.");

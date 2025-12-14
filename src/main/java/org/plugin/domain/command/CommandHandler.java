@@ -1,15 +1,17 @@
 package org.plugin.domain.command;
 
+import lombok.RequiredArgsConstructor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import static org.plugin.domain.command.MoneyCommandHandler.moneyCommandHandler;
-import static org.plugin.domain.command.ResidentCommandHandler.residentCommandHandler;
-
+@RequiredArgsConstructor
 public class CommandHandler implements CommandExecutor{
+  private final ResidentCommandHandler residentCommandHandler;
+  private final MoneyCommandHandler moneyCommandHandler;
+
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender,
@@ -20,10 +22,10 @@ public class CommandHandler implements CommandExecutor{
         try {
             switch (command.getName()) {
                 case "땅" -> {
-                    residentCommandHandler(sender, player, args);
+                    residentCommandHandler.residentCommandHandler(sender, player, args);
                 }
                 case "돈" -> {
-                    moneyCommandHandler(sender, player, args);
+                    moneyCommandHandler.moneyCommandHandler(sender, player, args);
                 }
 
                 default -> {

@@ -4,34 +4,54 @@ import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.plugin.domain.command.CommandHandler;
+import org.plugin.domain.command.MoneyCommandHandler;
+import org.plugin.domain.command.ResidentCommandHandler;
 import org.plugin.domain.customInventory.CustomInventoryGUI;
 import org.plugin.domain.money.Money;
 import org.plugin.domain.npc.CustomNPC;
 import org.plugin.domain.npc.NPC;
 import org.plugin.domain.scoreBoard.ScoreBoard;
+import org.plugin.util.FileUtil;
 import org.plugin.util.ItemUtil;
 import org.plugin.util.Scheduler;
 
 import java.util.Objects;
 
-import static org.plugin.domain.money.Money.upLoadMoneyData;
-
 public final class Main extends JavaPlugin {
-    private static Main plugin;
+
+    private FileUtil fileUtil;
+    private Scheduler scheduler;
 
     @Override
     public void onEnable() {
-        plugin = this;
-        Scheduler scheduler = new Scheduler();
-        Bukkit.getPluginManager().registerEvents(new EventManager(
-                new NPC()), this);
+        this.fileUtil = new FileUtil(this);
+        this.scheduler = new Scheduler(Bukkit.getScheduler(), this);
 
-        upLoadMoneyData();
-        scheduler.task(Money::saveMoneyData, 30, 30);
-        scheduler.task(ScoreBoard::updateScoreBoard, 30, 30);
+
+
+        Money money = new Money(fileUtil);
+        money.upLoadMoneyData();
+
+        ScoreBoard scoreBoard = new ScoreBoard(money);
+
+        NPC npc = new NPC();
+
+        scheduler.task(money::saveMoneyData, 30, 30);
+        scheduler.task(scoreBoard::updateScoreBoard, 30, 30);
+
+        Bukkit.getPluginManager().registerEvents(
+                new EventManager(money, npc, scoreBoard),
+                this);
 
         getLogger().info("플러그인이 활성화되었습니다.");
-        Objects.requireNonNull(this.getCommand("돈")).setExecutor(new CommandHandler());
+
+        CommandHandler commandHandler = new CommandHandler(
+                new ResidentCommandHandler(),
+                new MoneyCommandHandler(money));
+        String[] commandNames = new String[]{"돈","땅"};
+        for (String s : commandNames){
+            Objects.requireNonNull(this.getCommand(s)).setExecutor(commandHandler);
+        }
 
     }
 
@@ -55,10 +75,5 @@ public final class Main extends JavaPlugin {
 //        }
 //        return true;
 //    }
-
-    public static Main getInstance() {
-        return plugin;
-    }
-
 
 }

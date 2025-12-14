@@ -1,15 +1,17 @@
 package org.plugin.util;
 
+import lombok.RequiredArgsConstructor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.plugin.Main;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 
+@RequiredArgsConstructor
 public class FileUtil {
-    private final Main plugin = Main.getInstance();
+    private final JavaPlugin plugin;
 
     public FileConfiguration loadYaml(String path) {
         File file = new File(plugin.getDataFolder(), path);

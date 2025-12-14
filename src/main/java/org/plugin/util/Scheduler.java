@@ -1,12 +1,15 @@
 package org.plugin.util;
 
-import org.bukkit.Bukkit;
-import org.plugin.Main;
+import lombok.RequiredArgsConstructor;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitScheduler;
 
+@RequiredArgsConstructor
 public class Scheduler {
-    private final Main plugin = Main.getInstance();
+    private final BukkitScheduler scheduler;
+    private final JavaPlugin plugin;
 
     public void task(Runnable action, long delay, long period) {
-        Bukkit.getScheduler().runTaskTimer(plugin, action, delay, period);
+        scheduler.runTaskTimer(plugin, action, delay, period);
     }
 }

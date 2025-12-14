@@ -24,6 +24,8 @@ public class InventoryFrame {
 
     public void of(ItemFrame... itemFrames) {
         for (ItemFrame itemFrame : itemFrames) {
+
+
             addItem(itemFrame.material(), itemFrame.name(), itemFrame.index());
         }
     }

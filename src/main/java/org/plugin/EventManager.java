@@ -15,17 +15,16 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.plugin.domain.gamble.Gamble;
+import org.plugin.domain.money.Money;
 import org.plugin.domain.npc.CustomNPC;
 import org.plugin.domain.npc.NPC;
-
-import static org.plugin.domain.money.Money.getMoney;
-import static org.plugin.domain.scoreBoard.ScoreBoard.createScoreBoard;
-import static org.plugin.domain.scoreBoard.ScoreBoard.updateScoreBoard;
+import org.plugin.domain.scoreBoard.ScoreBoard;
 
 @RequiredArgsConstructor
 public class EventManager implements Listener {
-
+    private final Money money;
     private final NPC npc;
+    private final ScoreBoard scoreBoard;
 
     @EventHandler
     public void playerInteract(PlayerInteractEvent event) {
@@ -48,15 +47,15 @@ public class EventManager implements Listener {
     @EventHandler
     public void playerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        getMoney(player.getName());
+        money.getMoney(player.getName());
         player.sendMessage("안녕");
-        createScoreBoard(event.getPlayer());
-        updateScoreBoard();
+        scoreBoard.createScoreBoard(event.getPlayer());
+        scoreBoard.updateScoreBoard();
     }
 
     @EventHandler
     public void onPlayerQuitEventBoard(PlayerQuitEvent event) {
-        updateScoreBoard();
+        scoreBoard.updateScoreBoard();
     }
 
     // npc
