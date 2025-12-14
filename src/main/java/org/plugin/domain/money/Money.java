@@ -39,12 +39,12 @@ public class Money {
         fileUtil.upLoadMapToYaml(fileUtil.loadYaml(YAML_FILE_NAME), playerMoneyMap, Integer.class, YAML_FILE_NAME);
     }
 
-    public static void addMoney(String playername, int money) {
-        playerMoneyMap.put(playername, getMoney(playername) + money);
+    public static void addMoney(String playerName, int money) {
+        playerMoneyMap.put(playerName, getMoney(playerName) + money);
     }
 
-    public static void setMoney(String playername, int money) {
-        playerMoneyMap.put(playername, money);
+    public static void setMoney(String playerName, int money) {
+        playerMoneyMap.put(playerName, money);
     }
 
 }

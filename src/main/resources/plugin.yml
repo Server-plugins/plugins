@@ -8,4 +8,7 @@ commands:
     usage: Oh no...
   돈 :
     description: 돈을 보여준다
-    usage: 올바른 사용법 -> /돈 help
+    usage: /돈 [송금|수표]
+  땅 :
+    description: 땅을 생성한다
+    usage: /땅 [선택]1

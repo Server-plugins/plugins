@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import static org.plugin.domain.command.MoneyCommandHandler.moneyCommandHandler;
+import static org.plugin.domain.command.ResidentCommandHandler.residentCommandHandler;
 
 public class CommandHandler implements CommandExecutor{
 
@@ -16,18 +17,27 @@ public class CommandHandler implements CommandExecutor{
                              @NotNull String label,
                              @NotNull String[] args) {
         Player player = (Player) sender;
-
         try {
-            switch (label) {
-                case "돈" -> moneyCommandHandler(sender, player, args);
+            switch (command.getName()) {
+                case "땅" -> {
+                    residentCommandHandler(sender, player, args);
+                }
+                case "돈" -> {
+                    moneyCommandHandler(sender, player, args);
+                }
+
                 default -> {
                     return true;
                 }
             }
         } catch (IllegalAccessException e) { // 관리자 권한 예외처리
+
             return false;
         }
-
         return true;
+
+
+
+
     }
 }
